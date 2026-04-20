@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ronika TV</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #0a0c10;
+            --bg-ui: #161a20;
+            --accent: #00bcd4;
+            --accent-glow: rgba(0, 188, 212, 0.5);
+            --text-main: #ffffff;
+            --text-secondary: #9ba1a6;
+            --border: #2d333b;
+        }
+
+        /* قفل کردن اسکرول صفحه در دسکتاپ تا پلیر پایین نرود */
+        body {
+            font-family: 'Vazirmatn', Tahoma, Arial, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; 
+        }
+        
+        .header {
+            flex-shrink: 0; /* جلوگیری از تغییر سایز هدر */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 25px;
+            background: linear-gradient(-45deg, #0a0c10, #161a20, #004b57, #008194);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
+            border-bottom: 2px solid var(--accent);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* استایل پرچم کوردستان در هدر */
+        .kurdistan-flag {
+            width: 45px;
+            height: 30px;
+            border-radius: 4px;
+            object-fit: cover;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .app-title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 900;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .lang-btn:hover { 
+            background: var(--accent); 
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .main-content { 
+            display: flex; 
+            flex: 1; 
+            overflow: hidden; 
+        }
+
+        .channel-sidebar {
+            width: 320px;
+            background-color: var(--bg-ui);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 20;
+        }
+
+        .category-tabs {
+            display: flex;
+            padding: 10px;
+            gap: 5px;
+            background: #111418;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+        .tab-btn {
+            background: #1c2025;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .tab-btn.active {
+            background-color: var(--accent);
+            color: #000;
+            font-weight: bold;
+            border-color: var(--accent);
+        }
+
+        .channel-list {
+            padding: 10px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        .channel-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            margin-bottom: 8px;
+            background-color: #1a1e24;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+        .channel-item.active {
+            background-color: #242930;
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        .channel-item.active .channel-name { color: var(--accent); }
+
+        .channel-logo-wrapper {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .channel-logo { width: 85%; height: 85%; object-fit: contain; }
+        .channel-name { font-size: 14px; font-weight: 700; color: var(--text-secondary); }
+
+        .player-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #000;
+            min-width: 0; /* رفع باگ فلکس‌باکس */
+        }
+
+        .now-playing-bar {
+            flex-shrink: 0;
+            padding: 10px 20px;
+            background: #0a0c10;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .now-playing-label { color: var(--accent); font-size: 12px; font-weight: bold; }
+        #current-channel-name { color: #fff; font-size: 18px; font-weight: 900; }
+
+        #player-container {
+            flex: 1;
+            min-height: 0; /* کلید اصلی برای جلوگیری از بیرون زدن پلیر */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background-color: #000;
+        }
+        
+        /* تنظیمات جدید ویدیو تا به هیچ وجه بریده نشود */
+        video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; /* تمام ویدیو داخل کادر نمایش داده می‌شود */
+            background: #000;
+            outline: none;
+        }
+
+        #error-msg {
+            display: none;
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: #ff4d4d;
+            padding: 15px;
+            border-radius: 8px;
+            z-index: 100;
+            text-align: center;
+            border: 1px solid #ff4d4d;
+        }
+
+        /* در حالت موبایل، اجازه اسکرول می‌دهیم تا پلیر و لیست درست کار کنند */
+        @media (max-width: 768px) {
+            body { overflow: auto; height: auto; }
+            .main-content { flex-direction: column; overflow: visible; }
+            .channel-sidebar { width: 100%; height: auto; border-left: none; }
+            .player-section { height: auto; }
+            #player-container { height: auto; aspect-ratio: 16/9; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="brand-container">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Flag_of_Kurdistan.svg" alt="Kurdistan Flag" class="kurdistan-flag">
+            <h2 class="app-title">Ronika TV</h2>
+        </div>
+        <button id="lang-btn" class="lang-btn" onclick="toggleLanguage()">English</button>
+    </div>
+
+    <div class="main-content">
+        <div class="player-section">
+            <div class="now-playing-bar">
+                <span class="now-playing-label" id="label-playing">خەریکی بینینی:</span>
+                <span id="current-channel-name">تکایە کەناڵێک هەڵبژێرە</span>
+            </div>
+            <div id="player-container">
+                <video id="video" controls autoplay></video>
+                <div id="error-msg"></div>
+            </div>
+        </div>
+
+        <div class="channel-sidebar">
+            <div class="category-tabs">
+                <button class="tab-btn active" id="tab-all" onclick="filterChannels('all')">هەموو</button>
+                <button class="tab-btn" id="tab-news" onclick="filterChannels('news')">هەواڵ</button>
+                <button class="tab-btn" id="tab-ent" onclick="filterChannels('entertainment')">فیلم و دراما</button>
+                <button class="tab-btn" id="tab-sports" onclick="filterChannels('sports')">وەرزشی</button>
+            </div>
+            <div id="channels-container" class="channel-list"></div>
+        </div>
+    </div>
+
+    <script>
+        const myChannels = [
+            { name: "Rudaw TV", category: "news", logo: "https://i.imgur.com/Zo3IWOn.png", url: "https://live.rudaw.net/hls/rudaw-tv/master.m3u8" },
+            { name: "Kurdistan 24", category: "news", logo: "https://i.imgur.com/9QWs2ms.png", url: "https://d1x82nydcxndze.cloudfront.net/live/index_720p25.m3u8" },
+            { name: "Kurdistan TV", category: "news", logo: "https://i.imgur.com/mjQptpc.png", url: "https://5a3ed7a72ed4b.streamlock.net/live/SMIL:myStream.smil/playlist.m3u8" },
+            { name: "NRT HD", category: "news", logo: "https://i.imgur.com/4pNMVZB.png", url: "https://live20.bozztv.com/giatv/giatv-nrt/nrt/chunks.m3u8" },
+            { name: "Kurdsat News", category: "news", logo: "https://i.imgur.com/F3XRwkt.png", url: "https://hlspackager.akamaized.net/live/DB/KURDSAT_NEWS/HLS/KURDSAT_NEWS.m3u8" },
+            { name: "Waar TV", category: "entertainment", logo: "https://i.imgur.com/rK0y02d.png", url: "https://live.kwikmotion.com/waarmedialive/waarmedia.smil/waarmediapublish/waarmedia_source/chunks.m3u8" },
+            { name: "Kurdmax TV", category: "entertainment", logo: "https://i.imgur.com/5urcbM5.png", url: "https://stream.kurdmax.tv/app/kurdmax-sorani/llhls.m3u8" },
+            { name: "Kurdmax Music", category: "entertainment", logo: "https://i.imgur.com/otnIdEu.png", url: "https://6476e46b58f91.streamlock.net/music/MUSIC2402/playlist.m3u8" },
+            { name: "NRT Sport", category: "sports", logo: "https://via.placeholder.com/50x50/ffffff/000000?text=NRT", url: "https://live20.bozztv.com/giatv/giatv-NRT-SPORT/NRT-SPORT/chunks.m3u8" }
+        ];
+
+        let activeUrl = "";
+        let currentCategory = "all";
+        const container = document.getElementById('channels-container');
+        const channelTitle = document.getElementById('current-channel-name');
+        
+        function renderChannels(channelsToRender) {
+            container.innerHTML = ''; 
+            channelsToRender.forEach(channel => {
+                const div = document.createElement('div');
+                div.className = `channel-item ${channel.url === activeUrl ? 'active' : ''}`;
+                
+                div.innerHTML = `
+                    <div class="channel-logo-wrapper">
+                        <img class="channel-logo" src="${channel.logo}" onerror="this.src='https://via.placeholder.com/40'">
+                    </div>
+                    <div class="channel-name">${channel.name}</div>
+                `;
+                
+                div.onclick = () => playChannel(channel);
+                container.appendChild(div);
+            });
+        }
+
+        function filterChannels(category) {
+            currentCategory = category;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-${category === 'entertainment' ? 'ent' : category}`).classList.add('active');
+            renderChannels(category === 'all' ? myChannels : myChannels.filter(ch => ch.category === category));
+        }
+
+        var video = document.getElementById('video');
+        var hls;
+
+        function playChannel(channel) {
+            activeUrl = channel.url;
+            channelTitle.innerText = channel.name; 
+            filterChannels(currentCategory);
+
+            document.getElementById('error-msg').style.display = 'none';
+            if (hls) { hls.destroy(); } 
+            video.pause();
+
+            if (Hls.isSupported()) {
+                hls = new Hls();
+                hls.loadSource(channel.url);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+                hls.on(Hls.Events.ERROR, (e, data) => {
+                    if(data.fatal) document.getElementById('error-msg').style.display = 'block';
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = channel.url;
+                video.play();
+            }
+        }
+
+        const uiText = {
+            ku: { label: "خەریکی بینینی:", noSelect: "تکایە کەناڵێک هەڵبژێرە", all: "هەموو", news: "هەواڵ", ent: "فیلم و دراما", sports: "وەرزشی" },
+            en: { label: "Now Playing:", noSelect: "Please select a channel", all: "All", news: "News", ent: "Movies", sports: "Sports" }
+        };
+
+        let currentLang = 'ku';
+        function toggleLanguage() {
+            currentLang = currentLang === 'ku' ? 'en' : 'ku';
+            const t = uiText[currentLang];
+            document.documentElement.dir = currentLang === 'ku' ? 'rtl' : 'ltr';
+            document.getElementById('label-playing').innerText = t.label;
+            if(activeUrl === "") channelTitle.innerText = t.noSelect;
+            document.getElementById('tab-all').innerText = t.all;
+            document.getElementById('tab-news').innerText = t.news;
+            document.getElementById('tab-ent').innerText = t.ent;
+            document.getElementById('tab-sports').innerText = t.sports;
+        }
+
+        renderChannels(myChannels);
+    </script>
+</body>
+</html>
