@@ -1,0 +1,21 @@
+{
+  "name": "Ronika TV",
+  "short_name": "Ronika TV",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0a0c10",
+  "theme_color": "#00bcd4",
+  "description": "Kurdish Live TV Streaming",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/192x192/1c2025/00bcd4?text=R",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/512x512/1c2025/00bcd4?text=R",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
