@@ -6,6 +6,9 @@
     <title>Ronika TV</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0c10">
+    <link rel="apple-touch-icon" href="https://via.placeholder.com/192x192/1c2025/00bcd4?text=R">
     
     <style>
         :root {
@@ -356,6 +359,14 @@
         }
 
         renderChannels(myChannels);
+
+        // فعال‌سازی Service Worker برای نصب اپلیکیشن
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+            .then(() => console.log("Service Worker Registered"));
+        }
+
+        
     </script>
 </body>
 </html>
