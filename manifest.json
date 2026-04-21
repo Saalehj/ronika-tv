@@ -8,15 +8,15 @@
   "description": "Kurdish Live TV Streaming",
   "icons": [
     {
-      "src": "https://imgur.com/a/b3hX9Lw.png",
+      "src": "https://i.imgur.com/b3hX9Lw.jpg",
       "sizes": "192x192",
-      "type": "image/png",
+      "type": "image/jpeg",
       "purpose": "any maskable"
     },
     {
-      "src": "https://imgur.com/a/b3hX9Lw.png",
+      "src": "https://i.imgur.com/b3hX9Lw.jpg",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/jpeg",
       "purpose": "any maskable"
     }
   ]
