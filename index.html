@@ -25,140 +25,85 @@
             font-family: 'Vazirmatn', Tahoma, Arial, sans-serif;
             background-color: var(--bg-base);
             color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
+            margin: 0; padding: 0;
+            height: 100vh; display: flex; flex-direction: column;
             overflow: hidden; 
-            touch-action: pan-y; /* جلوگیری از رفرش تصادفی مرورگر در موبایل */
         }
         
         .header {
-            flex-shrink: 0; 
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 25px;
-            background: linear-gradient(-45deg, #0a0c10, #161a20, #004b57, #008194);
-            background-size: 400% 400%;
-            animation: gradientBG 12s ease infinite;
-            border-bottom: 2px solid var(--accent);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-            z-index: 1000;
+            flex-shrink: 0; display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 25px; background: linear-gradient(-45deg, #0a0c10, #161a20, #004b57, #008194);
+            background-size: 400% 400%; animation: gradientBG 12s ease infinite;
+            border-bottom: 2px solid var(--accent); box-shadow: 0 4px 20px rgba(0,0,0,0.5); z-index: 1000;
         }
 
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         .brand-container { display: flex; align-items: center; gap: 12px; }
-
-        .kurdistan-flag {
-            width: 45px; height: 30px; border-radius: 4px; object-fit: cover;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .app-title { margin: 0; font-size: 24px; font-weight: 900; color: #fff; text-transform: uppercase; }
-
-        .lang-btn {
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px); color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.2); padding: 8px 20px; border-radius: 25px;
-            font-size: 14px; font-weight: bold; font-family: inherit; cursor: pointer; transition: all 0.3s ease;
-        }
-        .lang-btn:hover { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+        .app-logo-img { width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--accent); }
+        .app-title { margin: 0; font-size: 22px; font-weight: 900; color: #fff; text-transform: uppercase; }
 
         .main-content { display: flex; flex: 1; overflow: hidden; }
 
-        .channel-sidebar { width: 320px; background-color: var(--bg-ui); border-left: 1px solid var(--border); display: flex; flex-direction: column; z-index: 20; }
-
-        .category-tabs {
-            display: flex; padding: 10px; gap: 5px; background: #111418; border-bottom: 1px solid var(--border); overflow-x: auto;
+        .channel-sidebar {
+            width: 320px; background-color: var(--bg-ui); border-left: 1px solid var(--border);
+            display: flex; flex-direction: column; z-index: 20;
         }
-        .category-tabs::-webkit-scrollbar { height: 4px; }
-        .category-tabs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
 
+        /* استایل نوار جستجو */
+        .search-container { padding: 10px; background: #111418; }
+        .search-input {
+            width: 100%; padding: 8px 12px; background: #1c2025; border: 1px solid var(--border);
+            border-radius: 20px; color: #fff; font-family: inherit; outline: none; box-sizing: border-box;
+        }
+        .search-input:focus { border-color: var(--accent); }
+
+        .category-tabs { display: flex; padding: 10px; gap: 5px; background: #111418; border-bottom: 1px solid var(--border); overflow-x: auto; }
         .tab-btn {
-            background: #1c2025; color: var(--text-secondary); border: 1px solid var(--border); padding: 8px 12px;
-            border-radius: 6px; cursor: pointer; font-size: 13px; font-family: inherit; white-space: nowrap;
+            background: #1c2025; color: var(--text-secondary); border: 1px solid var(--border);
+            padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-family: inherit; white-space: nowrap;
         }
-        .tab-btn.active { background-color: var(--accent); color: #000; font-weight: bold; border-color: var(--accent); }
+        .tab-btn.active { background-color: var(--accent); color: #000; font-weight: bold; }
 
         .channel-list { padding: 10px; overflow-y: auto; flex: 1; }
-        
         .channel-item {
             display: flex; align-items: center; gap: 12px; padding: 10px; margin-bottom: 8px;
             background-color: #1a1e24; border-radius: 8px; cursor: pointer; border: 1px solid transparent; transition: 0.3s;
-            position: relative;
         }
-        .channel-item.active { background-color: #242930; border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
-        .channel-item.active .channel-name { color: var(--accent); }
+        .channel-item.active { background-color: #242930; border-color: var(--accent); }
 
         .channel-logo-wrapper {
-            width: 40px; height: 40px; border-radius: 50%; background-color: #fff; display: flex;
-            align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0;
+            width: 40px; height: 40px; border-radius: 50%; background-color: #fff;
+            display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0;
         }
         .channel-logo { width: 85%; height: 85%; object-fit: contain; }
         .channel-name { font-size: 14px; font-weight: 700; color: var(--text-secondary); flex: 1; }
-        
-        /* دکمه افزودن به علاقه‌مندی‌ها */
-        .fav-btn {
-            background: none; border: none; color: #555; font-size: 20px; cursor: pointer;
-            padding: 5px; transition: 0.3s;
-        }
-        .fav-btn.favorited { color: #ff4757; text-shadow: 0 0 10px rgba(255, 71, 87, 0.5); }
 
-        .player-section { flex: 1; display: flex; flex-direction: column; background-color: #000; min-width: 0; position: relative;}
-
+        .player-section { flex: 1; display: flex; flex-direction: column; background-color: #000; position: relative; }
         .now-playing-bar {
-            flex-shrink: 0; padding: 10px 20px; background: #0a0c10; border-bottom: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: space-between; gap: 10px;
+            padding: 10px 20px; background: #0a0c10; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
         }
-        .playing-info { display: flex; align-items: center; gap: 10px; }
-        .now-playing-label { color: var(--accent); font-size: 12px; font-weight: bold; }
         #current-channel-name { color: #fff; font-size: 18px; font-weight: 900; }
 
-        /* کنترل‌های بالای پلیر (کیفیت و فول اسکرین) */
-        .custom-controls { display: flex; gap: 10px; align-items: center; }
-        .quality-selector {
-            background: #1c2025; color: #fff; border: 1px solid var(--border); padding: 5px 10px;
-            border-radius: 5px; font-family: inherit; outline: none; cursor: pointer; font-size: 12px;
-        }
-        .fs-btn {
-            background: var(--accent); color: #000; border: none; padding: 6px 12px; border-radius: 5px;
-            font-weight: bold; cursor: pointer; font-family: inherit; font-size: 12px;
-        }
+        .controls-right { display: flex; gap: 10px; align-items: center; }
+        .icon-btn { background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 18px; }
+        .icon-btn:hover { color: var(--accent); }
 
-        #player-container {
-            flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center;
-            position: relative; background-color: #000;
-        }
+        #player-container { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; }
+        video { width: 100%; height: 100%; object-fit: contain; }
         
-        video { width: 100%; height: 100%; object-fit: contain; background: #000; outline: none; }
-
-        /* لودینگ حرفه‌ای (Spinner) */
         .loader {
             display: none; position: absolute; border: 4px solid rgba(255,255,255,0.1); border-left-color: var(--accent);
-            border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; z-index: 50;
+            border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        #error-msg {
-            display: none; position: absolute; background: rgba(0, 0, 0, 0.8); color: #ff4d4d;
-            padding: 15px; border-radius: 8px; z-index: 100; text-align: center; border: 1px solid #ff4d4d;
-        }
-
-        /* راهنمای سوایپ در موبایل */
-        .swipe-hint {
-            display: none; position: absolute; bottom: 60px; color: rgba(255,255,255,0.5);
-            font-size: 12px; z-index: 20; text-align: center; width: 100%; pointer-events: none;
-        }
-
         @media (max-width: 768px) {
             body { overflow: auto; height: auto; }
-            .main-content { flex-direction: column; overflow: visible; }
-            .channel-sidebar { width: 100%; height: auto; border-left: none; }
-            .player-section { height: auto; }
-            #player-container { height: auto; aspect-ratio: 16/9; }
-            .swipe-hint { display: block; }
+            .main-content { flex-direction: column; }
+            .channel-sidebar { width: 100%; height: auto; }
+            #player-container { aspect-ratio: 16/9; }
         }
     </style>
 </head>
@@ -166,277 +111,141 @@
 
     <div class="header">
         <div class="brand-container">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Flag_of_Kurdistan.svg" alt="Kurdistan Flag" class="kurdistan-flag">
+            <img src="https://i.imgur.com/b3hX9Lw.jpg" alt="Ronika Logo" class="app-logo-img">
             <h2 class="app-title">Ronika TV</h2>
         </div>
         <button id="lang-btn" class="lang-btn" onclick="toggleLanguage()">English</button>
     </div>
 
     <div class="main-content">
+        <div class="channel-sidebar">
+            <div class="search-container">
+                <input type="text" id="search-input" class="search-input" placeholder="گەڕان بۆ کەناڵ..." oninput="searchChannels()">
+            </div>
+            <div class="category-tabs">
+                <button class="tab-btn active" id="tab-all" onclick="filterChannels('all')">هەموو</button>
+                <button class="tab-btn" id="tab-fav" onclick="filterChannels('fav')">⭐ دڵخواز</button>
+                <button class="tab-btn" id="tab-news" onclick="filterChannels('news')">هەواڵ</button>
+                <button class="tab-btn" id="tab-ent" onclick="filterChannels('entertainment')">فیلم</button>
+                <button class="tab-btn" id="tab-sports" onclick="filterChannels('sports')">وەرزش</button>
+            </div>
+            <div id="channels-container" class="channel-list"></div>
+        </div>
+
         <div class="player-section">
             <div class="now-playing-bar">
-                <div class="playing-info">
-                    <span class="now-playing-label" id="label-playing">خەریکی بینینی:</span>
-                    <span id="current-channel-name">تکایە کەناڵێک هەڵبژێرە</span>
-                </div>
-                <div class="custom-controls">
-                    <select id="quality-selector" class="quality-selector" onchange="changeQuality(this.value)" style="display:none;">
-                        <option value="-1">Auto</option>
-                    </select>
-                    <button class="fs-btn" onclick="toggleFullScreen()" id="fs-btn">پڕ شاشە</button>
+                <span id="current-channel-name">Ronika TV</span>
+                <div class="controls-right">
+                    <button class="icon-btn" onclick="shareApp()" title="Share">🔗</button>
+                    <select id="quality-selector" style="display:none; background:#1c2025; color:#fff; border:1px solid #333; border-radius:5px; font-size:12px; padding:2px 5px;"></select>
+                    <button class="icon-btn" onclick="toggleFullScreen()">🔳</button>
                 </div>
             </div>
-            
             <div id="player-container">
                 <div id="loader" class="loader"></div>
                 <video id="video" controls autoplay playsinline></video>
-                <div id="error-msg"></div>
-                <div class="swipe-hint" id="swipe-hint">👈 ڕابکێشە بۆ گۆڕینی کەناڵ 👉</div>
             </div>
-        </div>
-
-        <div class="channel-sidebar">
-            <div class="category-tabs">
-                <button class="tab-btn" id="tab-fav" onclick="filterChannels('fav')">⭐ دڵخوازەکان</button>
-                <button class="tab-btn active" id="tab-all" onclick="filterChannels('all')">هەموو</button>
-                <button class="tab-btn" id="tab-news" onclick="filterChannels('news')">هەواڵ</button>
-                <button class="tab-btn" id="tab-ent" onclick="filterChannels('entertainment')">فیلم و دراما</button>
-                <button class="tab-btn" id="tab-sports" onclick="filterChannels('sports')">وەرزشی</button>
-            </div>
-            <div id="channels-container" class="channel-list"></div>
         </div>
     </div>
 
     <script>
         const myChannels = [
-            { id: "ch1", name: "Rudaw TV", category: "news", logo: "https://raw.githubusercontent.com/picons/picons/2c3e96a983996957dc8e6c33c60ebd65ce98f1e2/build-source/logos/rudaw.dark.svg", url: "https://live.rudaw.net/hls/rudaw-tv/master.m3u8" },
-            { id: "ch2", name: "Kurdistan 24", category: "news", logo: "https://i.imgur.com/9QWs2ms.png", url: "https://ronikatv.salehjawhar.workers.dev/?url=https://d1x82nydcxndze.cloudfront.net/live/index_720p25.m3u8" },
-            { id: "ch3", name: "Kurdistan TV", category: "news", logo: "https://i.imgur.com/mjQptpc.png", url: "https://5a3ed7a72ed4b.streamlock.net/live/SMIL:myStream.smil/playlist.m3u8" },
-            { id: "ch4", name: "NRT HD", category: "news", logo: "https://i.imgur.com/4pNMVZB.png", url: "https://live20.bozztv.com/giatv/giatv-nrt/nrt/chunks.m3u8" },
-            { id: "ch5", name: "Kurdsat News", category: "news", logo: "https://i.imgur.com/F3XRwkt.png", url: "https://hlspackager.akamaized.net/live/DB/KURDSAT_NEWS/HLS/KURDSAT_NEWS.m3u8" },
-            { id: "ch6", name: "Waar TV", category: "entertainment", logo: "https://i.imgur.com/rK0y02d.png", url: "https://live.kwikmotion.com/waarmedialive/waarmedia.smil/waarmediapublish/waarmedia_source/chunks.m3u8" },
-            { id: "ch7", name: "Kurdmax TV", category: "entertainment", logo: "https://i.imgur.com/5urcbM5.png", url: "https://stream.kurdmax.tv/app/kurdmax-sorani/llhls.m3u8" },
-            { id: "ch8", name: "Kurdmax Music", category: "entertainment", logo: "https://i.imgur.com/otnIdEu.png", url: "https://6476e46b58f91.streamlock.net/music/MUSIC2402/playlist.m3u8" },
-            { id: "ch9", name: "NRT Sport", category: "sports", logo: "https://via.placeholder.com/50x50/ffffff/000000?text=NRT", url: "https://live20.bozztv.com/giatv/giatv-NRT-SPORT/NRT-SPORT/chunks.m3u8" }
+            { id: 1, name: "Rudaw TV", category: "news", logo: "https://i.imgur.com/Zo3IWOn.png", url: "https://live.rudaw.net/hls/rudaw-tv/master.m3u8" },
+            { id: 2, name: "Kurdistan 24", category: "news", logo: "https://i.imgur.com/9QWs2ms.png", url: "https://ronikatv.salehjawhar.workers.dev/?url=https://d1x82nydcxndze.cloudfront.net/live/index_720p25.m3u8" },
+            { id: 3, name: "Kurdistan TV", category: "news", logo: "https://i.imgur.com/mjQptpc.png", url: "https://5a3ed7a72ed4b.streamlock.net/live/SMIL:myStream.smil/playlist.m3u8" },
+            { id: 4, name: "NRT HD", category: "news", logo: "https://i.imgur.com/4pNMVZB.png", url: "https://live20.bozztv.com/giatv/giatv-nrt/nrt/chunks.m3u8" },
+            { id: 5, name: "Kurdsat News", category: "news", logo: "https://i.imgur.com/F3XRwkt.png", url: "https://hlspackager.akamaized.net/live/DB/KURDSAT_NEWS/HLS/KURDSAT_NEWS.m3u8" },
+            { id: 6, name: "Waar TV", category: "entertainment", logo: "https://i.imgur.com/rK0y02d.png", url: "https://live.kwikmotion.com/waarmedialive/waarmedia.smil/waarmediapublish/waarmedia_source/chunks.m3u8" },
+            { id: 7, name: "Kurdmax TV", category: "entertainment", logo: "https://i.imgur.com/5urcbM5.png", url: "https://stream.kurdmax.tv/app/kurdmax-sorani/llhls.m3u8" },
+            { id: 8, name: "Kurdmax Music", category: "entertainment", logo: "https://i.imgur.com/otnIdEu.png", url: "https://6476e46b58f91.streamlock.net/music/MUSIC2402/playlist.m3u8" },
+            { id: 9, name: "NRT Sport", category: "sports", logo: "https://via.placeholder.com/50x50/ffffff/000000?text=NRT", url: "https://live20.bozztv.com/giatv/giatv-NRT-SPORT/NRT-SPORT/chunks.m3u8" }
         ];
 
-        // سیستم علاقه‌مندی‌ها (ذخیره در گوشی)
         let favorites = JSON.parse(localStorage.getItem('ronika_favs')) || [];
-
-        function toggleFav(e, chId) {
-            e.stopPropagation(); // جلوگیری از پلی شدن ویدیو موقع کلیک روی قلب
-            if(favorites.includes(chId)) {
-                favorites = favorites.filter(id => id !== chId);
-            } else {
-                favorites.push(chId);
-            }
-            localStorage.setItem('ronika_favs', JSON.stringify(favorites));
-            filterChannels(currentCategory); // آپدیت ظاهر
-        }
-
         let activeUrl = "";
         let currentCategory = "all";
-        let currentFilteredList = myChannels; // برای سوایپ نیاز داریم بدونیم تو چه لیستی هستیم
         const container = document.getElementById('channels-container');
-        const channelTitle = document.getElementById('current-channel-name');
+        const video = document.getElementById('video');
         const loader = document.getElementById('loader');
-        const qualitySelector = document.getElementById('quality-selector');
-        
-        function renderChannels(channelsToRender) {
-            currentFilteredList = channelsToRender;
-            container.innerHTML = ''; 
-            
-            if(channelsToRender.length === 0) {
-                container.innerHTML = '<div style="text-align:center; padding:20px; color:#555;">هیچ کەناڵێک نییە</div>';
-                return;
-            }
+        let hls;
 
-            channelsToRender.forEach(channel => {
+        function renderChannels(list) {
+            container.innerHTML = '';
+            list.forEach(ch => {
+                const isFav = favorites.includes(ch.id);
                 const div = document.createElement('div');
-                div.className = `channel-item ${channel.url === activeUrl ? 'active' : ''}`;
-                
-                const isFav = favorites.includes(channel.id);
-                
+                div.className = `channel-item ${ch.url === activeUrl ? 'active' : ''}`;
                 div.innerHTML = `
-                    <div class="channel-logo-wrapper">
-                        <img class="channel-logo" src="${channel.logo}" onerror="this.src='https://via.placeholder.com/40'">
-                    </div>
-                    <div class="channel-name">${channel.name}</div>
-                    <button class="fav-btn ${isFav ? 'favorited' : ''}" onclick="toggleFav(event, '${channel.id}')">
-                        ${isFav ? '❤️' : '🤍'}
-                    </button>
+                    <div class="channel-logo-wrapper"><img class="channel-logo" src="${ch.logo}"></div>
+                    <div class="channel-name">${ch.name}</div>
+                    <span onclick="toggleFav(event, ${ch.id})">${isFav ? '❤️' : '🤍'}</span>
                 `;
-                
-                div.onclick = () => playChannel(channel);
+                div.onclick = () => playChannel(ch);
                 container.appendChild(div);
             });
         }
 
-        function filterChannels(category) {
-            currentCategory = category;
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`tab-${category === 'entertainment' ? 'ent' : category}`).classList.add('active');
-            
-            if(category === 'fav') {
-                renderChannels(myChannels.filter(ch => favorites.includes(ch.id)));
-            } else if (category === 'all') {
-                renderChannels(myChannels);
-            } else {
-                renderChannels(myChannels.filter(ch => ch.category === category));
-            }
+        function toggleFav(e, id) {
+            e.stopPropagation();
+            favorites.includes(id) ? favorites = favorites.filter(i => i !== id) : favorites.push(id);
+            localStorage.setItem('ronika_favs', JSON.stringify(favorites));
+            filterChannels(currentCategory);
         }
 
-        var video = document.getElementById('video');
-        var hls;
+        function filterChannels(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + (cat === 'entertainment' ? 'ent' : cat)).classList.add('active');
+            let filtered = cat === 'all' ? myChannels : (cat === 'fav' ? myChannels.filter(c => favorites.includes(c.id)) : myChannels.filter(c => c.category === cat));
+            renderChannels(filtered);
+        }
 
-        // نمایش و مخفی کردن لودینگ
-        video.addEventListener('waiting', () => loader.style.display = 'block');
-        video.addEventListener('playing', () => loader.style.display = 'none');
+        function searchChannels() {
+            let term = document.getElementById('search-input').value.toLowerCase();
+            renderChannels(myChannels.filter(c => c.name.toLowerCase().includes(term)));
+        }
 
-        function playChannel(channel) {
-            activeUrl = channel.url;
-            channelTitle.innerText = channel.name; 
-            filterChannels(currentCategory);
-            loader.style.display = 'block'; // نمایش اسپینر در ابتدا
-            qualitySelector.style.display = 'none'; // مخفی کردن کیفیت تا لود شدن
-
-            document.getElementById('error-msg').style.display = 'none';
-            if (hls) { hls.destroy(); } 
-            video.pause();
-
+        function playChannel(ch) {
+            activeUrl = ch.url;
+            document.getElementById('current-channel-name').innerText = ch.name;
+            renderChannels(myChannels.filter(c => currentCategory === 'all' || c.category === currentCategory));
+            
+            loader.style.display = 'block';
+            if (hls) hls.destroy();
             if (Hls.isSupported()) {
-                hls = new Hls({
-                    maxBufferLength: 10,
-                    liveSyncDurationCount: 3
-                });
-                hls.loadSource(channel.url);
+                hls = new Hls();
+                hls.loadSource(ch.url);
                 hls.attachMedia(video);
-                
-                // پر کردن منوی کیفیت پس از خواندن فایل
-                hls.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
-                    video.play();
-                    // اگر کانال چند کیفیت داشت، منو را نشان بده
-                    if(data.levels.length > 1) {
-                        qualitySelector.innerHTML = '<option value="-1">Auto</option>';
-                        data.levels.forEach((level, index) => {
-                            qualitySelector.innerHTML += `<option value="${index}">${level.height}p</option>`;
-                        });
-                        qualitySelector.style.display = 'block';
-                    }
-                });
-
-                // Auto Retry هوشمند
-                hls.on(Hls.Events.ERROR, function (event, data) {
-                    if (data.fatal) {
-                        switch (data.type) {
-                            case Hls.ErrorTypes.NETWORK_ERROR:
-                                console.log("Network error, trying to recover...");
-                                hls.startLoad(); // تلاش مجدد
-                                break;
-                            case Hls.ErrorTypes.MEDIA_ERROR:
-                                console.log("Media error, trying to recover...");
-                                hls.recoverMediaError(); // تعمیر فایل خراب
-                                break;
-                            default:
-                                hls.destroy();
-                                document.getElementById('error-msg').style.display = 'block';
-                                document.getElementById('error-msg').innerText = "پەخشەکە پچڕا. تکایە دووبارە هەوڵبدەرەوە.";
-                                loader.style.display = 'none';
-                                break;
-                        }
-                    }
-                });
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = channel.url;
+                hls.on(Hls.Events.MANIFEST_PARSED, () => { video.play(); loader.style.display = 'none'; });
+            } else {
+                video.src = ch.url;
                 video.play();
             }
-            
-            if(window.innerWidth > 768) {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
         }
 
-        // عملکرد تغییر کیفیت
-        function changeQuality(levelIndex) {
-            if(hls) {
-                hls.currentLevel = parseInt(levelIndex);
-            }
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({ title: 'Ronika TV', text: 'Watch Kurdish Channels Live!', url: window.location.href });
+            } else { alert("Link copied: " + window.location.href); }
         }
 
-        // عملکرد فول اسکرین
         function toggleFullScreen() {
-            if (!document.fullscreenElement) {
-                if (video.requestFullscreen) { video.requestFullscreen(); }
-                else if (video.webkitRequestFullscreen) { video.webkitRequestFullscreen(); } // برای سافاری
-            } else {
-                if (document.exitFullscreen) { document.exitFullscreen(); }
-                else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
-            }
+            if (!document.fullscreenElement) video.requestFullscreen();
+            else document.exitFullscreen();
         }
-
-        // سیستم سوایپ (کشیدن صفحه) برای موبایل
-        let touchstartX = 0;
-        let touchendX = 0;
-        const playerArea = document.getElementById('player-container');
-
-        playerArea.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; });
-        playerArea.addEventListener('touchend', e => {
-            touchendX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
-
-        function handleSwipe() {
-            if(currentFilteredList.length === 0 || !activeUrl) return;
-            
-            const currentIndex = currentFilteredList.findIndex(ch => ch.url === activeUrl);
-            if (touchendX < touchstartX - 50) {
-                // سوایپ به چپ (کانال بعدی)
-                const nextChannel = currentFilteredList[currentIndex + 1] || currentFilteredList[0];
-                playChannel(nextChannel);
-            }
-            if (touchendX > touchstartX + 50) {
-                // سوایپ به راست (کانال قبلی)
-                const prevChannel = currentFilteredList[currentIndex - 1] || currentFilteredList[currentFilteredList.length - 1];
-                playChannel(prevChannel);
-            }
-        }
-
-        // دیکشنری دو زبانه
-        const uiText = {
-            ku: { 
-                label: "خەریکی بینینی:", noSelect: "تکایە کەناڵێک هەڵبژێرە", all: "هەموو", 
-                news: "هەواڵ", ent: "فیلم و دراما", sports: "وەرزشی", fav: "⭐ دڵخوازەکان", fs: "پڕ شاشە", hint: "👈 ڕابکێشە بۆ گۆڕینی کەناڵ 👉"
-            },
-            en: { 
-                label: "Now Playing:", noSelect: "Please select a channel", all: "All", 
-                news: "News", ent: "Movies", sports: "Sports", fav: "⭐ Favorites", fs: "Full Screen", hint: "👈 Swipe to change channel 👉"
-            }
-        };
 
         let currentLang = 'ku';
         function toggleLanguage() {
             currentLang = currentLang === 'ku' ? 'en' : 'ku';
-            const t = uiText[currentLang];
             document.documentElement.dir = currentLang === 'ku' ? 'rtl' : 'ltr';
-            document.getElementById('label-playing').innerText = t.label;
-            if(activeUrl === "") channelTitle.innerText = t.noSelect;
-            document.getElementById('tab-all').innerText = t.all;
-            document.getElementById('tab-news').innerText = t.news;
-            document.getElementById('tab-ent').innerText = t.ent;
-            document.getElementById('tab-sports').innerText = t.sports;
-            document.getElementById('tab-fav').innerText = t.fav;
-            document.getElementById('fs-btn').innerText = t.fs;
-            document.getElementById('swipe-hint').innerText = t.hint;
+            document.getElementById('search-input').placeholder = currentLang === 'ku' ? 'گەڕان بۆ کەناڵ...' : 'Search channels...';
+            document.getElementById('lang-btn').innerText = currentLang === 'ku' ? 'English' : 'کوردی';
         }
 
-        filterChannels('all'); // اجرای اولیه
-    </script>
+        filterChannels('all');
 
-    <script>
-        // فعال‌سازی Service Worker نسخه جدید
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-            .then(() => console.log("Service Worker V4 Registered"));
+            navigator.serviceWorker.register('sw.js').then(() => console.log("PWA Ready"));
         }
     </script>
 </body>
