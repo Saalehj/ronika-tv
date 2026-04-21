@@ -1,7 +1,7 @@
 {
   "name": "Ronika TV",
   "short_name": "Ronika TV",
-  "start_url": "./index.html",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#0a0c10",
   "theme_color": "#00bcd4",
@@ -11,13 +11,13 @@
       "src": "https://i.imgur.com/b3hX9Lw.jpg",
       "sizes": "192x192",
       "type": "image/jpeg",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "https://i.imgur.com/b3hX9Lw.jpg",
       "sizes": "512x512",
       "type": "image/jpeg",
-      "purpose": "any maskable"
+      "purpose": "maskable"
     }
   ]
 }
