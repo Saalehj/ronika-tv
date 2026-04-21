@@ -48,16 +48,23 @@
 
         .app-title { margin: 0; font-size: 24px; font-weight: 900; color: #fff; text-transform: uppercase; }
 
+        .header-buttons { display: flex; gap: 10px; align-items: center; }
+
         .lang-btn {
             background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px); color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.2); padding: 8px 20px; border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2); padding: 8px 15px; border-radius: 25px;
             font-size: 14px; font-weight: bold; font-family: inherit; cursor: pointer; transition: all 0.3s ease;
         }
         .lang-btn:hover { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+        
+        /* استایل دکمه نصب اپلیکیشن */
+        .install-btn {
+            background: #e50914; border-color: #e50914; display: none; /* پیش‌فرض مخفی است تا مرورگر اجازه دهد */
+        }
+        .install-btn:hover { background: #b80710; box-shadow: 0 0 15px rgba(229, 9, 20, 0.5); }
 
         .main-content { display: flex; flex: 1; overflow: hidden; }
 
-        /* پلیر در موبایل بالا می‌ماند چون در HTML اول آمده است */
         .player-section { flex: 1; display: flex; flex-direction: column; background-color: #000; min-width: 0; position: relative;}
 
         .now-playing-bar {
@@ -145,6 +152,9 @@
             .player-section { height: auto; }
             #player-container { height: auto; aspect-ratio: 16/9; }
             .swipe-hint { display: block; }
+            /* در موبایل نوشته‌های هدر کمی کوچکتر شود تا دکمه جا شود */
+            .app-title { font-size: 20px; }
+            .lang-btn { padding: 6px 12px; font-size: 12px;}
         }
     </style>
 </head>
@@ -155,7 +165,10 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Flag_of_Kurdistan.svg" alt="Kurdistan Flag" class="kurdistan-flag">
             <h2 class="app-title">Ronika TV</h2>
         </div>
-        <button id="lang-btn" class="lang-btn" onclick="toggleLanguage()">English</button>
+        <div class="header-buttons">
+            <button id="install-btn" class="lang-btn install-btn">📥 دابەزاندن</button>
+            <button id="lang-btn" class="lang-btn" onclick="toggleLanguage()">English</button>
+        </div>
     </div>
 
     <div class="main-content">
@@ -378,11 +391,13 @@
         const uiText = {
             ku: { 
                 label: "خەریکی بینینی:", noSelect: "تکایە کەناڵێک هەڵبژێرە", all: "هەموو", 
-                news: "هەواڵ", ent: "فیلم و دراما", sports: "وەرزشی", fav: "⭐ دڵخوازەکان", fs: "پڕ شاشە", hint: "👈 ڕابکێشە بۆ گۆڕینی کەناڵ 👉"
+                news: "هەواڵ", ent: "فیلم و دراما", sports: "وەرزشی", fav: "⭐ دڵخوازەکان", fs: "پڕ شاشە", hint: "👈 ڕابکێشە بۆ گۆڕینی کەناڵ 👉",
+                install: "📥 دابەزاندن"
             },
             en: { 
                 label: "Now Playing:", noSelect: "Please select a channel", all: "All", 
-                news: "News", ent: "Movies", sports: "Sports", fav: "⭐ Favorites", fs: "Full Screen", hint: "👈 Swipe to change channel 👉"
+                news: "News", ent: "Movies", sports: "Sports", fav: "⭐ Favorites", fs: "Full Screen", hint: "👈 Swipe to change channel 👉",
+                install: "📥 Install App"
             }
         };
 
@@ -400,12 +415,40 @@
             document.getElementById('tab-fav').innerText = t.fav;
             document.getElementById('fs-btn').innerText = t.fs;
             document.getElementById('swipe-hint').innerText = t.hint;
+            document.getElementById('install-btn').innerText = t.install;
         }
 
         filterChannels('all');
+
+        // ==========================================
+        // سیستم هوشمند نمایش دکمه نصب اپلیکیشن
+        // ==========================================
+        let deferredPrompt;
+        const installBtn = document.getElementById('install-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // جلوگیری از نمایش خودکار پاپ‌آپ گوگل
+            e.preventDefault();
+            // ذخیره رویداد برای استفاده در دکمه
+            deferredPrompt = e;
+            // نمایش دکمه اختصاصی نصب ما
+            installBtn.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt !== null) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installBtn.style.display = 'none'; // مخفی کردن دکمه پس از نصب
+                }
+                deferredPrompt = null;
+            }
+        });
     </script>
 
     <script>
+        // فعال‌سازی Service Worker
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
             .then(() => console.log("Service Worker Registered"));
