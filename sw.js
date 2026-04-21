@@ -1,22 +1,24 @@
-const CACHE_NAME = 'ronika-tv-v5';
-const STATIC_ASSETS = [
-    './index.html',
-    './manifest.json',
-    'https://i.imgur.com/b3hX9Lw.jpg'
-];
+const CACHE_NAME = 'ronika-tv-v1';
 
+// وقتی اپلیکیشن نصب میشه، این فایل‌ها تو حافظه گوشی ذخیره میشن
 self.addEventListener('install', (e) => {
-    // کش کردن فایل‌های اصلی برای لود فوق‌سریع
-    e.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(STATIC_ASSETS)));
+    e.waitUntil(
+        caches.open(CACHE_NAME).then((cache) => {
+            return cache.addAll([
+                './',
+                './index.html',
+                './manifest.json',
+                './AppLogo.jpg'
+            ]);
+        })
+    );
 });
 
+// این بخش به گوشی میگه که این یه اپلیکیشن واقعیه
 self.addEventListener('fetch', (e) => {
-    // جلوگیری از کش شدن استریم‌های زنده (بسیار مهم برای IPTV)
-    if (e.request.url.includes('.m3u8') || e.request.url.includes('.ts')) {
-        return; 
-    }
-    // برای بقیه فایل‌ها: اول چک کن تو کش هست یا نه، اگه نبود دانلود کن
     e.respondWith(
-        caches.match(e.request).then(res => res || fetch(e.request))
+        caches.match(e.request).then((response) => {
+            return response || fetch(e.request);
+        })
     );
 });
