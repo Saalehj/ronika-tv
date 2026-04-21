@@ -1,21 +1,23 @@
 {
   "name": "Ronika TV",
   "short_name": "Ronika TV",
-  "start_url": ".",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0a0c10",
   "theme_color": "#00bcd4",
   "description": "Kurdish Live TV Streaming",
   "icons": [
     {
-      "src": "https://i.imgur.com/9QWs2ms.png",
+      "src": "https://imgur.com/a/b3hX9Lw",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "https://i.imgur.com/9QWs2ms.png",
+      "src": "https://imgur.com/a/b3hX9Lw",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
