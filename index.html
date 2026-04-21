@@ -40,13 +40,8 @@
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         .brand-container { display: flex; align-items: center; gap: 12px; }
-
-        .kurdistan-flag {
-            width: 45px; height: 30px; border-radius: 4px; object-fit: cover;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .app-title { margin: 0; font-size: 24px; font-weight: 900; color: #fff; text-transform: uppercase; }
+        .app-logo-img { width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--accent); }
+        .app-title { margin: 0; font-size: 22px; font-weight: 900; color: #fff; text-transform: uppercase; }
 
         .header-buttons { display: flex; gap: 10px; align-items: center; }
 
@@ -57,44 +52,76 @@
         }
         .lang-btn:hover { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
         
-        /* استایل دکمه نصب اپلیکیشن */
-        .install-btn {
-            background: #e50914; border-color: #e50914; display: none; /* پیش‌فرض مخفی است تا مرورگر اجازه دهد */
-        }
+        .install-btn { background: #e50914; border-color: #e50914; display: none; }
         .install-btn:hover { background: #b80710; box-shadow: 0 0 15px rgba(229, 9, 20, 0.5); }
 
         .main-content { display: flex; flex: 1; overflow: hidden; }
 
-        .player-section { flex: 1; display: flex; flex-direction: column; background-color: #000; min-width: 0; position: relative;}
+        .channel-sidebar {
+            width: 320px; background-color: var(--bg-ui); border-left: 1px solid var(--border);
+            display: flex; flex-direction: column; z-index: 20;
+        }
 
+        .search-container { padding: 10px; background: #111418; }
+        .search-input {
+            width: 100%; padding: 8px 12px; background: #1c2025; border: 1px solid var(--border);
+            border-radius: 20px; color: #fff; font-family: inherit; outline: none; box-sizing: border-box;
+        }
+        .search-input:focus { border-color: var(--accent); }
+
+        .category-tabs { display: flex; padding: 10px; gap: 5px; background: #111418; border-bottom: 1px solid var(--border); overflow-x: auto; }
+        .category-tabs::-webkit-scrollbar { height: 4px; }
+        .category-tabs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+        .tab-btn {
+            background: #1c2025; color: var(--text-secondary); border: 1px solid var(--border);
+            padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-family: inherit; white-space: nowrap;
+        }
+        .tab-btn.active { background-color: var(--accent); color: #000; font-weight: bold; }
+
+        .channel-list { padding: 10px; overflow-y: auto; flex: 1; }
+        .channel-item {
+            display: flex; align-items: center; gap: 12px; padding: 10px; margin-bottom: 8px;
+            background-color: #1a1e24; border-radius: 8px; cursor: pointer; border: 1px solid transparent; transition: 0.3s;
+        }
+        .channel-item.active { background-color: #242930; border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+        .channel-item.active .channel-name { color: var(--accent); }
+
+        .channel-logo-wrapper {
+            width: 40px; height: 40px; border-radius: 50%; background-color: #fff;
+            display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0;
+        }
+        .channel-logo { width: 85%; height: 85%; object-fit: contain; }
+        .channel-name { font-size: 14px; font-weight: 700; color: var(--text-secondary); flex: 1; }
+
+        .fav-btn { background: none; border: none; color: #555; font-size: 20px; cursor: pointer; padding: 5px; transition: 0.3s; }
+        .fav-btn.favorited { color: #ff4757; text-shadow: 0 0 10px rgba(255, 71, 87, 0.5); }
+
+        .player-section { flex: 1; display: flex; flex-direction: column; background-color: #000; position: relative; min-width: 0;}
+        
         .now-playing-bar {
-            flex-shrink: 0; padding: 10px 20px; background: #0a0c10; border-bottom: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: space-between; gap: 10px;
+            padding: 10px 20px; background: #0a0c10; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
         }
         .playing-info { display: flex; align-items: center; gap: 10px; }
         .now-playing-label { color: var(--accent); font-size: 12px; font-weight: bold; }
         #current-channel-name { color: #fff; font-size: 18px; font-weight: 900; }
 
-        .custom-controls { display: flex; gap: 10px; align-items: center; }
+        .controls-right { display: flex; gap: 10px; align-items: center; }
+        .icon-btn { background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 18px; }
+        .icon-btn:hover { color: var(--accent); }
+        
         .quality-selector {
             background: #1c2025; color: #fff; border: 1px solid var(--border); padding: 5px 10px;
             border-radius: 5px; font-family: inherit; outline: none; cursor: pointer; font-size: 12px;
         }
-        .fs-btn {
-            background: var(--accent); color: #000; border: none; padding: 6px 12px; border-radius: 5px;
-            font-weight: bold; cursor: pointer; font-family: inherit; font-size: 12px;
-        }
 
-        #player-container {
-            flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center;
-            position: relative; background-color: #000;
-        }
+        #player-container { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; min-height: 0; }
+        video { width: 100%; height: 100%; object-fit: contain; outline: none; }
         
-        video { width: 100%; height: 100%; object-fit: contain; background: #000; outline: none; }
-
         .loader {
             display: none; position: absolute; border: 4px solid rgba(255,255,255,0.1); border-left-color: var(--accent);
-            border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; z-index: 50;
+            border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; z-index: 50;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
@@ -108,51 +135,13 @@
             font-size: 12px; z-index: 20; text-align: center; width: 100%; pointer-events: none;
         }
 
-        .channel-sidebar { width: 320px; background-color: var(--bg-ui); border-left: 1px solid var(--border); display: flex; flex-direction: column; z-index: 20; }
-
-        .category-tabs {
-            display: flex; padding: 10px; gap: 5px; background: #111418; border-bottom: 1px solid var(--border); overflow-x: auto;
-        }
-        .category-tabs::-webkit-scrollbar { height: 4px; }
-        .category-tabs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-
-        .tab-btn {
-            background: #1c2025; color: var(--text-secondary); border: 1px solid var(--border); padding: 8px 12px;
-            border-radius: 6px; cursor: pointer; font-size: 13px; font-family: inherit; white-space: nowrap;
-        }
-        .tab-btn.active { background-color: var(--accent); color: #000; font-weight: bold; border-color: var(--accent); }
-
-        .channel-list { padding: 10px; overflow-y: auto; flex: 1; }
-        
-        .channel-item {
-            display: flex; align-items: center; gap: 12px; padding: 10px; margin-bottom: 8px;
-            background-color: #1a1e24; border-radius: 8px; cursor: pointer; border: 1px solid transparent; transition: 0.3s;
-            position: relative;
-        }
-        .channel-item.active { background-color: #242930; border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
-        .channel-item.active .channel-name { color: var(--accent); }
-
-        .channel-logo-wrapper {
-            width: 40px; height: 40px; border-radius: 50%; background-color: #fff; display: flex;
-            align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0;
-        }
-        .channel-logo { width: 85%; height: 85%; object-fit: contain; }
-        .channel-name { font-size: 14px; font-weight: 700; color: var(--text-secondary); flex: 1; }
-        
-        .fav-btn {
-            background: none; border: none; color: #555; font-size: 20px; cursor: pointer;
-            padding: 5px; transition: 0.3s;
-        }
-        .fav-btn.favorited { color: #ff4757; text-shadow: 0 0 10px rgba(255, 71, 87, 0.5); }
-
         @media (max-width: 768px) {
             body { overflow: auto; height: auto; }
-            .main-content { flex-direction: column; overflow: visible; }
+            .main-content { flex-direction: column; }
             .channel-sidebar { width: 100%; height: auto; border-left: none; }
             .player-section { height: auto; }
-            #player-container { height: auto; aspect-ratio: 16/9; }
+            #player-container { aspect-ratio: 16/9; height: auto; }
             .swipe-hint { display: block; }
-            /* در موبایل نوشته‌های هدر کمی کوچکتر شود تا دکمه جا شود */
             .app-title { font-size: 20px; }
             .lang-btn { padding: 6px 12px; font-size: 12px;}
         }
@@ -162,7 +151,7 @@
 
     <div class="header">
         <div class="brand-container">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Flag_of_Kurdistan.svg" alt="Kurdistan Flag" class="kurdistan-flag">
+            <img src="./AppLogo.jpg" alt="Ronika Logo" class="app-logo-img">
             <h2 class="app-title">Ronika TV</h2>
         </div>
         <div class="header-buttons">
@@ -178,14 +167,14 @@
                     <span class="now-playing-label" id="label-playing">خەریکی بینینی:</span>
                     <span id="current-channel-name">تکایە کەناڵێک هەڵبژێرە</span>
                 </div>
-                <div class="custom-controls">
+                <div class="controls-right">
+                    <button class="icon-btn" onclick="shareApp()" title="Share">🔗</button>
                     <select id="quality-selector" class="quality-selector" onchange="changeQuality(this.value)" style="display:none;">
                         <option value="-1">Auto</option>
                     </select>
-                    <button class="fs-btn" onclick="toggleFullScreen()" id="fs-btn">پڕ شاشە</button>
+                    <button class="icon-btn" onclick="toggleFullScreen()">🔳</button>
                 </div>
             </div>
-            
             <div id="player-container">
                 <div id="loader" class="loader"></div>
                 <video id="video" controls autoplay playsinline></video>
@@ -195,6 +184,9 @@
         </div>
 
         <div class="channel-sidebar">
+            <div class="search-container">
+                <input type="text" id="search-input" class="search-input" placeholder="گەڕان بۆ کەناڵ..." oninput="searchChannels()">
+            </div>
             <div class="category-tabs">
                 <button class="tab-btn" id="tab-fav" onclick="filterChannels('fav')">⭐ دڵخوازەکان</button>
                 <button class="tab-btn active" id="tab-all" onclick="filterChannels('all')">هەموو</button>
@@ -207,12 +199,14 @@
     </div>
 
     <script>
+        // لیست کانال‌ها دوباره مستقیماً داخل کدهای اصلی قرار گرفتند
         const myChannels = [
             { id: "ch1", name: "Rudaw TV", category: "news", logo: "https://raw.githubusercontent.com/picons/picons/2c3e96a983996957dc8e6c33c60ebd65ce98f1e2/build-source/logos/rudaw.dark.svg", url: "https://live.rudaw.net/hls/rudaw-tv/master.m3u8" },
             { id: "ch2", name: "Kurdistan 24", category: "news", logo: "https://i.imgur.com/9QWs2ms.png", url: "https://ronikatv.salehjawhar.workers.dev/?url=https://d1x82nydcxndze.cloudfront.net/live/index_720p25.m3u8" },
             { id: "ch3", name: "Kurdistan TV", category: "news", logo: "https://i.imgur.com/mjQptpc.png", url: "https://5a3ed7a72ed4b.streamlock.net/live/SMIL:myStream.smil/playlist.m3u8" },
             { id: "ch4", name: "NRT HD", category: "news", logo: "https://i.imgur.com/4pNMVZB.png", url: "https://live20.bozztv.com/giatv/giatv-nrt/nrt/chunks.m3u8" },
             { id: "ch5", name: "Kurdsat News", category: "news", logo: "https://i.imgur.com/F3XRwkt.png", url: "https://hlspackager.akamaized.net/live/DB/KURDSAT_NEWS/HLS/KURDSAT_NEWS.m3u8" },
+            { id: "ch10", name: "Ava News", category: "news", logo: "https://assets.ava.news/logo/ava-logo.svg", url: "https://ava1.site/upload/ava.m3u8" },
             { id: "ch6", name: "Waar TV", category: "entertainment", logo: "https://i.imgur.com/rK0y02d.png", url: "https://live.kwikmotion.com/waarmedialive/waarmedia.smil/waarmediapublish/waarmedia_source/chunks.m3u8" },
             { id: "ch7", name: "Kurdmax TV", category: "entertainment", logo: "https://i.imgur.com/5urcbM5.png", url: "https://stream.kurdmax.tv/app/kurdmax-sorani/llhls.m3u8" },
             { id: "ch8", name: "Kurdmax Music", category: "entertainment", logo: "https://i.imgur.com/otnIdEu.png", url: "https://6476e46b58f91.streamlock.net/music/MUSIC2402/playlist.m3u8" },
@@ -220,96 +214,81 @@
         ];
 
         let favorites = JSON.parse(localStorage.getItem('ronika_favs')) || [];
-
-        function toggleFav(e, chId) {
-            e.stopPropagation(); 
-            if(favorites.includes(chId)) {
-                favorites = favorites.filter(id => id !== chId);
-            } else {
-                favorites.push(chId);
-            }
-            localStorage.setItem('ronika_favs', JSON.stringify(favorites));
-            filterChannels(currentCategory);
-        }
-
         let activeUrl = "";
         let currentCategory = "all";
         let currentFilteredList = myChannels; 
+
         const container = document.getElementById('channels-container');
         const channelTitle = document.getElementById('current-channel-name');
         const loader = document.getElementById('loader');
         const qualitySelector = document.getElementById('quality-selector');
-        
-        function renderChannels(channelsToRender) {
-            currentFilteredList = channelsToRender;
-            container.innerHTML = ''; 
-            
-            if(channelsToRender.length === 0) {
+        const video = document.getElementById('video');
+        let hls;
+
+        function renderChannels(list) {
+            currentFilteredList = list;
+            container.innerHTML = '';
+            if(list.length === 0) {
                 container.innerHTML = '<div style="text-align:center; padding:20px; color:#555;">هیچ کەناڵێک نییە</div>';
                 return;
             }
-
-            channelsToRender.forEach(channel => {
+            list.forEach(ch => {
+                const isFav = favorites.includes(ch.id);
                 const div = document.createElement('div');
-                div.className = `channel-item ${channel.url === activeUrl ? 'active' : ''}`;
-                
-                const isFav = favorites.includes(channel.id);
-                
+                div.className = `channel-item ${ch.url === activeUrl ? 'active' : ''}`;
                 div.innerHTML = `
-                    <div class="channel-logo-wrapper">
-                        <img class="channel-logo" src="${channel.logo}" onerror="this.src='https://via.placeholder.com/40'">
-                    </div>
-                    <div class="channel-name">${channel.name}</div>
-                    <button class="fav-btn ${isFav ? 'favorited' : ''}" onclick="toggleFav(event, '${channel.id}')">
-                        ${isFav ? '❤️' : '🤍'}
-                    </button>
+                    <div class="channel-logo-wrapper"><img class="channel-logo" src="${ch.logo}" onerror="this.src='https://via.placeholder.com/40'"></div>
+                    <div class="channel-name">${ch.name}</div>
+                    <button class="fav-btn ${isFav ? 'favorited' : ''}" onclick="toggleFav(event, '${ch.id}')">${isFav ? '❤️' : '🤍'}</button>
                 `;
-                
-                div.onclick = () => playChannel(channel);
+                div.onclick = () => playChannel(ch);
                 container.appendChild(div);
             });
         }
 
-        function filterChannels(category) {
-            currentCategory = category;
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`tab-${category === 'entertainment' ? 'ent' : category}`).classList.add('active');
-            
-            if(category === 'fav') {
-                renderChannels(myChannels.filter(ch => favorites.includes(ch.id)));
-            } else if (category === 'all') {
-                renderChannels(myChannels);
-            } else {
-                renderChannels(myChannels.filter(ch => ch.category === category));
-            }
+        function toggleFav(e, id) {
+            e.stopPropagation();
+            favorites.includes(id) ? favorites = favorites.filter(i => i !== id) : favorites.push(id);
+            localStorage.setItem('ronika_favs', JSON.stringify(favorites));
+            filterChannels(currentCategory);
         }
 
-        var video = document.getElementById('video');
-        var hls;
+        function filterChannels(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + (cat === 'entertainment' ? 'ent' : cat)).classList.add('active');
+            let filtered = cat === 'all' ? myChannels : (cat === 'fav' ? myChannels.filter(c => favorites.includes(c.id)) : myChannels.filter(c => c.category === cat));
+            // اگر متنی جستجو شده بود، آن را هم در فیلتر لحاظ کند
+            let term = document.getElementById('search-input').value.toLowerCase();
+            if(term) {
+                filtered = filtered.filter(c => c.name.toLowerCase().includes(term));
+            }
+            renderChannels(filtered);
+        }
+
+        function searchChannels() { filterChannels(currentCategory); }
 
         video.addEventListener('waiting', () => loader.style.display = 'block');
         video.addEventListener('playing', () => loader.style.display = 'none');
 
-        function playChannel(channel) {
-            activeUrl = channel.url;
-            channelTitle.innerText = channel.name; 
-            filterChannels(currentCategory);
-            loader.style.display = 'block'; 
+        function playChannel(ch) {
+            activeUrl = ch.url;
+            channelTitle.innerText = ch.name;
+            renderChannels(currentFilteredList); // فقط آپدیت ظاهر
+            
+            loader.style.display = 'block';
             qualitySelector.style.display = 'none';
-
             document.getElementById('error-msg').style.display = 'none';
-            if (hls) { hls.destroy(); } 
+
+            if (hls) hls.destroy();
             video.pause();
 
             if (Hls.isSupported()) {
-                hls = new Hls({
-                    maxBufferLength: 10,
-                    liveSyncDurationCount: 3
-                });
-                hls.loadSource(channel.url);
+                hls = new Hls({ maxBufferLength: 10, liveSyncDurationCount: 3 });
+                hls.loadSource(ch.url);
                 hls.attachMedia(video);
                 
-                hls.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
+                hls.on(Hls.Events.MANIFEST_PARSED, (e, data) => {
                     video.play();
                     if(data.levels.length > 1) {
                         qualitySelector.innerHTML = '<option value="-1">Auto</option>';
@@ -320,7 +299,7 @@
                     }
                 });
 
-                hls.on(Hls.Events.ERROR, function (event, data) {
+                hls.on(Hls.Events.ERROR, (e, data) => {
                     if (data.fatal) {
                         switch (data.type) {
                             case Hls.ErrorTypes.NETWORK_ERROR:
@@ -339,66 +318,40 @@
                     }
                 });
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = channel.url;
+                video.src = ch.url;
                 video.play();
             }
-            
-            if(window.innerWidth > 768) {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+            if(window.innerWidth > 768) window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function changeQuality(levelIndex) {
-            if(hls) {
-                hls.currentLevel = parseInt(levelIndex);
-            }
-        }
+        function changeQuality(val) { if(hls) hls.currentLevel = parseInt(val); }
 
         function toggleFullScreen() {
-            if (!document.fullscreenElement) {
-                if (video.requestFullscreen) { video.requestFullscreen(); }
-                else if (video.webkitRequestFullscreen) { video.webkitRequestFullscreen(); }
-            } else {
-                if (document.exitFullscreen) { document.exitFullscreen(); }
-                else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
-            }
+            if (!document.fullscreenElement) video.requestFullscreen();
+            else document.exitFullscreen();
         }
 
-        let touchstartX = 0;
-        let touchendX = 0;
-        const playerArea = document.getElementById('player-container');
+        function shareApp() {
+            if (navigator.share) navigator.share({ title: 'Ronika TV', url: window.location.href });
+            else alert("Link copied: " + window.location.href);
+        }
 
-        playerArea.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; });
-        playerArea.addEventListener('touchend', e => {
-            touchendX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
+        // سیستم سوایپ (کشیدن انگشت)
+        let touchstartX = 0; let touchendX = 0;
+        const playerArea = document.getElementById('player-container');
+        playerArea.addEventListener('touchstart', e => touchstartX = e.changedTouches[0].screenX );
+        playerArea.addEventListener('touchend', e => { touchendX = e.changedTouches[0].screenX; handleSwipe(); });
 
         function handleSwipe() {
             if(currentFilteredList.length === 0 || !activeUrl) return;
-            
-            const currentIndex = currentFilteredList.findIndex(ch => ch.url === activeUrl);
-            if (touchendX < touchstartX - 50) {
-                const nextChannel = currentFilteredList[currentIndex + 1] || currentFilteredList[0];
-                playChannel(nextChannel);
-            }
-            if (touchendX > touchstartX + 50) {
-                const prevChannel = currentFilteredList[currentIndex - 1] || currentFilteredList[currentFilteredList.length - 1];
-                playChannel(prevChannel);
-            }
+            const idx = currentFilteredList.findIndex(ch => ch.url === activeUrl);
+            if (touchendX < touchstartX - 50) playChannel(currentFilteredList[idx + 1] || currentFilteredList[0]);
+            if (touchendX > touchstartX + 50) playChannel(currentFilteredList[idx - 1] || currentFilteredList[currentFilteredList.length - 1]);
         }
 
         const uiText = {
-            ku: { 
-                label: "خەریکی بینینی:", noSelect: "تکایە کەناڵێک هەڵبژێرە", all: "هەموو", 
-                news: "هەواڵ", ent: "فیلم و دراما", sports: "وەرزشی", fav: "⭐ دڵخوازەکان", fs: "پڕ شاشە", hint: "👈 ڕابکێشە بۆ گۆڕینی کەناڵ 👉",
-                install: "📥 دابەزاندن"
-            },
-            en: { 
-                label: "Now Playing:", noSelect: "Please select a channel", all: "All", 
-                news: "News", ent: "Movies", sports: "Sports", fav: "⭐ Favorites", fs: "Full Screen", hint: "👈 Swipe to change channel 👉",
-                install: "📥 Install App"
-            }
+            ku: { label: "خەریکی بینینی:", noSelect: "تکایە کەناڵێک هەڵبژێرە", all: "هەموو", news: "هەواڵ", ent: "فیلم", sports: "وەرزش", fav: "⭐ دڵخواز", hint: "👈 ڕابکێشە بۆ گۆڕینی کەناڵ 👉", install: "📥 دابەزاندن", search: "گەڕان بۆ کەناڵ..." },
+            en: { label: "Now Playing:", noSelect: "Please select a channel", all: "All", news: "News", ent: "Movies", sports: "Sports", fav: "⭐ Favorites", hint: "👈 Swipe to change channel 👉", install: "📥 Install App", search: "Search channels..." }
         };
 
         let currentLang = 'ku';
@@ -413,25 +366,20 @@
             document.getElementById('tab-ent').innerText = t.ent;
             document.getElementById('tab-sports').innerText = t.sports;
             document.getElementById('tab-fav').innerText = t.fav;
-            document.getElementById('fs-btn').innerText = t.fs;
             document.getElementById('swipe-hint').innerText = t.hint;
             document.getElementById('install-btn').innerText = t.install;
+            document.getElementById('search-input').placeholder = t.search;
+            document.getElementById('lang-btn').innerText = currentLang === 'ku' ? 'English' : 'کوردی';
         }
 
         filterChannels('all');
 
-        // ==========================================
-        // سیستم هوشمند نمایش دکمه نصب اپلیکیشن
-        // ==========================================
+        // پاپ‌آپ نصب
         let deferredPrompt;
         const installBtn = document.getElementById('install-btn');
-
         window.addEventListener('beforeinstallprompt', (e) => {
-            // جلوگیری از نمایش خودکار پاپ‌آپ گوگل
             e.preventDefault();
-            // ذخیره رویداد برای استفاده در دکمه
             deferredPrompt = e;
-            // نمایش دکمه اختصاصی نصب ما
             installBtn.style.display = 'block';
         });
 
@@ -439,19 +387,13 @@
             if (deferredPrompt !== null) {
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    installBtn.style.display = 'none'; // مخفی کردن دکمه پس از نصب
-                }
+                if (outcome === 'accepted') installBtn.style.display = 'none';
                 deferredPrompt = null;
             }
         });
-    </script>
 
-    <script>
-        // فعال‌سازی Service Worker
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-            .then(() => console.log("Service Worker Registered"));
+            navigator.serviceWorker.register('sw.js').then(() => console.log("SW Registered"));
         }
     </script>
 </body>
