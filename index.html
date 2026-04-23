@@ -75,7 +75,14 @@
         }
         .search-input:focus { border-color: var(--accent-1); box-shadow: 0 0 10px rgba(0, 188, 212, 0.2); }
 
-        .category-tabs { display: flex; padding: 10px 15px; gap: 8px; overflow-x: auto; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+        .category-tabs { 
+            display: flex; 
+            flex-wrap: wrap; /* این جادو تب‌ها رو می‌شکنه خط پایین */
+            padding: 10px 15px; 
+            gap: 8px; 
+            border-bottom: 1px solid var(--border); 
+            flex-shrink: 0; 
+        }
         .category-tabs::-webkit-scrollbar { display: none; }
         .tab-btn {
             background: rgba(0,0,0,0.4); color: var(--text-muted); border: 1px solid transparent;
@@ -470,7 +477,20 @@
         });
 
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').then(() => console.log("Service Worker Registered"));
+            navigator.serviceWorker.register('sw.js').then(reg => {
+                console.log("Service Worker Registered");
+                
+                // اگر فایل sw.js جدیدی پیدا کرد، اپلیکیشن رو مجبور به رفرش کن
+                reg.onupdatefound = () => {
+                    const installingWorker = reg.installing;
+                    installingWorker.onstatechange = () => {
+                        if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            console.log("آپدیت جدید یافت شد! در حال بروزرسانی...");
+                            window.location.reload();
+                        }
+                    };
+                };
+            });
         }
     </script>
 </body>
