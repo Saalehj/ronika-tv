@@ -30,7 +30,7 @@
                               radial-gradient(circle at 90% 80%, rgba(0, 188, 212, 0.1) 0%, transparent 40%);
             color: var(--text-main);
             margin: 0; padding: 0; 
-            /* استفاده از dvh برای حل مشکل مخفی شدن پایین صفحه در موبایل */
+            /* تنظیم ارتفاع داینامیک برای حل مشکل اسکرول در موبایل */
             height: 100vh; height: 100dvh; 
             display: flex; flex-direction: column; overflow: hidden;
             touch-action: pan-y;
@@ -38,11 +38,8 @@
 
         .header {
             flex-shrink: 0; display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 25px; 
-            background: rgba(10, 14, 23, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            z-index: 1000;
+            padding: 15px 25px; background: rgba(10, 14, 23, 0.8);
+            backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); z-index: 1000;
         }
 
         .brand-container { display: flex; align-items: center; gap: 15px; }
@@ -59,11 +56,7 @@
         .install-btn { background: #ff2a5f; border-color: #ff2a5f; display: none; }
         .install-btn:hover { background: #e0003b; box-shadow: 0 0 15px rgba(255, 42, 95, 0.5); }
 
-        /* ساختار فلکس‌باکس اصلاح شده */
-        .main-content { 
-            display: flex; flex-direction: row; flex: 1; 
-            overflow: hidden; position: relative; min-height: 0; 
-        }
+        .main-content { display: flex; flex-direction: row; flex: 1; overflow: hidden; position: relative; min-height: 0; }
 
         .player-section { 
             flex: 1; display: flex; flex-direction: column; background: #000; 
@@ -90,10 +83,10 @@
         }
         .tab-btn.active { background: linear-gradient(45deg, var(--accent-1), var(--accent-2)); color: #fff; font-weight: bold; }
 
-        /* اسکرول بی‌نقص در لیست کانال‌ها */
+        /* اسکرول روان لیست کانال‌ها */
         .channel-list { 
-            padding: 15px; padding-bottom: 30px; /* فضای امن در پایین */
-            overflow-y: auto; flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; 
+            padding: 15px; overflow-y: auto; flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; 
+            padding-bottom: 30px; /* فضای امن در پایین */
         }
         .channel-list::-webkit-scrollbar { width: 5px; }
         .channel-list::-webkit-scrollbar-thumb { background: var(--accent-2); border-radius: 10px; }
@@ -123,7 +116,6 @@
         .controls-right { display: flex; gap: 12px; align-items: center; }
         .icon-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; border-radius: 8px; padding: 8px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
         .icon-btn:hover { background: var(--accent-1); color: #000; }
-        
         .quality-selector { background: rgba(0,0,0,0.5); color: #fff; border: 1px solid var(--accent-1); padding: 5px 10px; border-radius: 8px; font-family: inherit; cursor: pointer; }
 
         #video-wrapper { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; background: #000; overflow: hidden; min-height: 0; }
@@ -135,6 +127,7 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        /* استایل‌های فول‌اسکرین سفارشی */
         .fs-ui { position: absolute; left: 0; right: 0; padding: 20px; z-index: 2147483647; transition: opacity 0.4s ease; opacity: 0; pointer-events: none; }
         .fs-ui.active { opacity: 1; pointer-events: auto; }
         
@@ -154,16 +147,13 @@
         .fs-card-logo { width: 50px; height: 50px; border-radius: 50%; background: #fff; padding: 2px; }
         .fs-card-name { color: #fff; font-size: 12px; font-weight: bold; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
 
-        /* جادوی موبایل: فریز شدن پلیر و اسکرول صحیح سایدبار */
+        /* جادوی موبایل: فریز شدن پلیر در بالا و اسکرول روان لیست در پایین */
         @media (max-width: 768px) {
             .main-content { flex-direction: column; }
             .player-section { flex: none; height: auto; z-index: 100; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
             #video-wrapper { aspect-ratio: 16/9; height: auto; }
-            
-            /* در موبایل، سایدبار باید ارتفاع باقی‌مانده را پر کند */
             .channel-sidebar { flex: 1; width: 100%; border-left: none; min-height: 0; }
-            
-            /* ایجاد فضای خالی برای اینکه آخرین کانال کاملاً دیده شود */
+            /* اطمینان از دیده شدن کانال آخر */
             .channel-list { padding-bottom: 80px; } 
             
             .app-title { font-size: 18px; }
@@ -206,6 +196,8 @@
             <div id="video-wrapper">
                 <div id="loader" class="loader"></div>
                 <video id="video" playsinline></video>
+                <iframe id="iframe-player" style="display:none; width:100%; height:100%; border:none; z-index:5;" allowfullscreen></iframe>
+                
                 <div id="click-overlay" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:10; cursor:pointer; display:none;"></div>
                 
                 <div id="fs-header" class="fs-ui fs-header">
@@ -238,10 +230,10 @@
     </div>
 
     <script>
+        // دیتابیس کانال‌ها با تنظیم هوشمند Ava News به عنوان iframe
         const myChannels = [
             { id: "ch1", name: "Rudaw TV", category: "news", logo: "https://raw.githubusercontent.com/picons/picons/2c3e96a983996957dc8e6c33c60ebd65ce98f1e2/build-source/logos/rudaw.dark.svg", url: "https://live.rudaw.net/hls/rudaw-tv/master.m3u8" },
-            // لینک آوا تی‌وی با وورکر قدرتمند خودت که در کلودفلر ساختی جایگزین شد
-            { id: "ch10", name: "Ava News", category: "news", logo: "https://ava.news/ava-logo.svg", url: "https://ronikatv.salehjawhar.workers.dev/?url=http://ur4k.me:80/live/houmid738/1a1dbbe35/403802.m3u8" },
+            { id: "ch10", name: "Ava News", category: "news", logo: "https://ava.news/ava-logo.svg", url: "https://avamedia.live", type: "iframe" },
             { id: "ch3", name: "Kurdistan TV", category: "news", logo: "https://i.imgur.com/mjQptpc.png", url: "https://5a3ed7a72ed4b.streamlock.net/live/SMIL:myStream.smil/playlist.m3u8" },
             { id: "ch2", name: "Kurdistan 24", category: "news", logo: "https://i.imgur.com/9QWs2ms.png", url: "https://ronikatv.salehjawhar.workers.dev/?url=https://d1x82nydcxndze.cloudfront.net/live/index_720p25.m3u8" },
             { id: "ch4", name: "NRT HD", category: "news", logo: "https://i.imgur.com/4pNMVZB.png", url: "https://live20.bozztv.com/giatv/giatv-nrt/nrt/chunks.m3u8" },
@@ -266,6 +258,7 @@
         const loader = document.getElementById('loader');
         const qualitySelector = document.getElementById('quality-selector');
         const video = document.getElementById('video');
+        const iframePlayer = document.getElementById('iframe-player');
         let hls;
 
         function renderChannels(list) {
@@ -331,6 +324,7 @@
         video.addEventListener('waiting', () => loader.style.display = 'block');
         video.addEventListener('playing', () => loader.style.display = 'none');
 
+        // تابع اصلی پخش ویدیو با پشتیبانی از iframe
         function playChannel(channel) {
             activeUrl = channel.url;
             channelTitle.innerText = channel.name; 
@@ -344,33 +338,44 @@
             if (hls) hls.destroy(); 
             video.pause();
 
-            if (Hls.isSupported()) {
-                hls = new Hls({ maxBufferLength: 10, liveSyncDurationCount: 3 });
-                hls.loadSource(channel.url);
-                hls.attachMedia(video);
-                
-                hls.on(Hls.Events.MANIFEST_PARSED, (e, data) => {
-                    video.play();
-                    video.setAttribute("controls", "controls");
-                    if(data.levels.length > 1) {
-                        qualitySelector.innerHTML = '<option value="-1">Auto</option>';
-                        data.levels.forEach((level, index) => {
-                            qualitySelector.innerHTML += `<option value="${index}">${level.height}p</option>`;
-                        });
-                        qualitySelector.style.display = 'block';
-                    }
-                });
+            if (channel.type === "iframe") {
+                video.style.display = 'none';
+                iframePlayer.style.display = 'block';
+                iframePlayer.src = channel.url;
+                loader.style.display = 'none';
+            } else {
+                iframePlayer.style.display = 'none';
+                iframePlayer.src = "";
+                video.style.display = 'block';
 
-                hls.on(Hls.Events.ERROR, (e, data) => {
-                    if (data.fatal) {
-                        if(data.type === Hls.ErrorTypes.NETWORK_ERROR) { hls.startLoad(); }
-                        else { hls.destroy(); loader.style.display = 'none'; }
-                    }
-                });
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = channel.url;
-                video.setAttribute("controls", "controls");
-                video.play();
+                if (Hls.isSupported()) {
+                    hls = new Hls({ maxBufferLength: 10, liveSyncDurationCount: 3 });
+                    hls.loadSource(channel.url);
+                    hls.attachMedia(video);
+                    
+                    hls.on(Hls.Events.MANIFEST_PARSED, (e, data) => {
+                        video.play();
+                        video.setAttribute("controls", "controls");
+                        if(data.levels.length > 1) {
+                            qualitySelector.innerHTML = '<option value="-1">Auto</option>';
+                            data.levels.forEach((level, index) => {
+                                qualitySelector.innerHTML += `<option value="${index}">${level.height}p</option>`;
+                            });
+                            qualitySelector.style.display = 'block';
+                        }
+                    });
+
+                    hls.on(Hls.Events.ERROR, (e, data) => {
+                        if (data.fatal) {
+                            if(data.type === Hls.ErrorTypes.NETWORK_ERROR) { hls.startLoad(); }
+                            else { hls.destroy(); loader.style.display = 'none'; }
+                        }
+                    });
+                } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = channel.url;
+                    video.setAttribute("controls", "controls");
+                    video.play();
+                }
             }
         }
 
