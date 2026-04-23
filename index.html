@@ -30,16 +30,19 @@
                               radial-gradient(circle at 90% 80%, rgba(0, 188, 212, 0.1) 0%, transparent 40%);
             color: var(--text-main);
             margin: 0; padding: 0; 
-            /* جلوگیری از اسکرول کل صفحه */
-            height: 100vh;
+            /* استفاده از dvh برای حل مشکل مخفی شدن پایین صفحه در موبایل */
+            height: 100vh; height: 100dvh; 
             display: flex; flex-direction: column; overflow: hidden;
             touch-action: pan-y;
         }
 
         .header {
             flex-shrink: 0; display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 25px; background: rgba(10, 14, 23, 0.8);
-            backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); z-index: 1000;
+            padding: 15px 25px; 
+            background: rgba(10, 14, 23, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
         }
 
         .brand-container { display: flex; align-items: center; gap: 15px; }
@@ -56,10 +59,10 @@
         .install-btn { background: #ff2a5f; border-color: #ff2a5f; display: none; }
         .install-btn:hover { background: #e0003b; box-shadow: 0 0 15px rgba(255, 42, 95, 0.5); }
 
-        /* ساختار فلکس‌باکس برای ثابت ماندن پلیر و اسکرول شدن سایدبار */
+        /* ساختار فلکس‌باکس اصلاح شده */
         .main-content { 
             display: flex; flex-direction: row; flex: 1; 
-            overflow: hidden; position: relative; 
+            overflow: hidden; position: relative; min-height: 0; 
         }
 
         .player-section { 
@@ -70,7 +73,6 @@
         .channel-sidebar {
             width: 340px; background: var(--bg-glass); border-left: 1px solid var(--border);
             display: flex; flex-direction: column; z-index: 20; backdrop-filter: blur(10px);
-            height: 100%;
         }
 
         .search-container { padding: 15px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
@@ -88,8 +90,11 @@
         }
         .tab-btn.active { background: linear-gradient(45deg, var(--accent-1), var(--accent-2)); color: #fff; font-weight: bold; }
 
-        /* فقط لیست کانال‌ها اسکرول می‌شود */
-        .channel-list { padding: 15px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+        /* اسکرول بی‌نقص در لیست کانال‌ها */
+        .channel-list { 
+            padding: 15px; padding-bottom: 30px; /* فضای امن در پایین */
+            overflow-y: auto; flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; 
+        }
         .channel-list::-webkit-scrollbar { width: 5px; }
         .channel-list::-webkit-scrollbar-thumb { background: var(--accent-2); border-radius: 10px; }
         
@@ -106,7 +111,7 @@
         .channel-name { font-size: 15px; font-weight: 700; color: #fff; flex: 1; }
         .fav-btn { background: none; border: none; font-size: 20px; cursor: pointer; transition: 0.3s; opacity: 0.5; filter: grayscale(100%); }
         .fav-btn.favorited { opacity: 1; filter: none; text-shadow: 0 0 15px rgba(255, 0, 0, 0.6); }
-        
+
         .now-playing-bar {
             padding: 12px 20px; background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.7)); 
             border-bottom: 1px solid var(--accent-1); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
@@ -118,6 +123,7 @@
         .controls-right { display: flex; gap: 12px; align-items: center; }
         .icon-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; border-radius: 8px; padding: 8px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
         .icon-btn:hover { background: var(--accent-1); color: #000; }
+        
         .quality-selector { background: rgba(0,0,0,0.5); color: #fff; border: 1px solid var(--accent-1); padding: 5px 10px; border-radius: 8px; font-family: inherit; cursor: pointer; }
 
         #video-wrapper { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; background: #000; overflow: hidden; min-height: 0; }
@@ -129,7 +135,6 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* رابط کاربری (UI) اختصاصی حالت فول‌اسکرین */
         .fs-ui { position: absolute; left: 0; right: 0; padding: 20px; z-index: 2147483647; transition: opacity 0.4s ease; opacity: 0; pointer-events: none; }
         .fs-ui.active { opacity: 1; pointer-events: auto; }
         
@@ -149,13 +154,18 @@
         .fs-card-logo { width: 50px; height: 50px; border-radius: 50%; background: #fff; padding: 2px; }
         .fs-card-name { color: #fff; font-size: 12px; font-weight: bold; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
 
-        /* جادوی موبایل: فریز شدن قطعی پلیر */
+        /* جادوی موبایل: فریز شدن پلیر و اسکرول صحیح سایدبار */
         @media (max-width: 768px) {
             .main-content { flex-direction: column; }
             .player-section { flex: none; height: auto; z-index: 100; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
             #video-wrapper { aspect-ratio: 16/9; height: auto; }
-            .channel-sidebar { flex: 1; width: 100%; border-left: none; }
-            .channel-list { padding-bottom: 30px; }
+            
+            /* در موبایل، سایدبار باید ارتفاع باقی‌مانده را پر کند */
+            .channel-sidebar { flex: 1; width: 100%; border-left: none; min-height: 0; }
+            
+            /* ایجاد فضای خالی برای اینکه آخرین کانال کاملاً دیده شود */
+            .channel-list { padding-bottom: 80px; } 
+            
             .app-title { font-size: 18px; }
             .fs-title { font-size: 18px; }
             .fs-channel-card { min-width: 80px; padding: 8px; }
@@ -230,8 +240,8 @@
     <script>
         const myChannels = [
             { id: "ch1", name: "Rudaw TV", category: "news", logo: "https://raw.githubusercontent.com/picons/picons/2c3e96a983996957dc8e6c33c60ebd65ce98f1e2/build-source/logos/rudaw.dark.svg", url: "https://live.rudaw.net/hls/rudaw-tv/master.m3u8" },
-            // استفاده از یک پروکسی عمومی متفاوت برای آوا نیوز جهت دور زدن بلاک‌های Cloudflare
-            { id: "ch10", name: "Ava News", category: "news", logo: "https://ava.news/ava-logo.svg", url: "https://corsproxy.io/?url=http://ur4k.me:80/live/houmid738/1a1dbbe35/392585.m3u8" },
+            // لینک آوا تی‌وی با وورکر قدرتمند خودت که در کلودفلر ساختی جایگزین شد
+            { id: "ch10", name: "Ava News", category: "news", logo: "https://ava.news/ava-logo.svg", url: "https://ronikatv.salehjawhar.workers.dev/?url=http://ur4k.me:80/live/houmid738/1a1dbbe35/392585.m3u8" },
             { id: "ch3", name: "Kurdistan TV", category: "news", logo: "https://i.imgur.com/mjQptpc.png", url: "https://5a3ed7a72ed4b.streamlock.net/live/SMIL:myStream.smil/playlist.m3u8" },
             { id: "ch2", name: "Kurdistan 24", category: "news", logo: "https://i.imgur.com/9QWs2ms.png", url: "https://ronikatv.salehjawhar.workers.dev/?url=https://d1x82nydcxndze.cloudfront.net/live/index_720p25.m3u8" },
             { id: "ch4", name: "NRT HD", category: "news", logo: "https://i.imgur.com/4pNMVZB.png", url: "https://live20.bozztv.com/giatv/giatv-nrt/nrt/chunks.m3u8" },
@@ -366,9 +376,6 @@
 
         function changeQuality(val) { if(hls) hls.currentLevel = parseInt(val); }
 
-        /* ================================================= */
-        /* سیستم جادویی فول‌اسکرین سفارشی با منوی کلیکی */
-        /* ================================================= */
         const videoWrapper = document.getElementById('video-wrapper');
         const clickOverlay = document.getElementById('click-overlay');
         const fsUiElements = document.querySelectorAll('.fs-ui');
@@ -383,7 +390,6 @@
             }
         }
 
-        // فقط وقتی لایه نامرئی کلیک شد منو باز شود
         clickOverlay.addEventListener('click', (e) => {
             if(document.fullscreenElement) {
                 showFullscreenUI();
@@ -407,9 +413,9 @@
             if (!document.fullscreenElement) {
                 fsUiElements.forEach(el => el.classList.remove('active'));
                 video.setAttribute("controls", "controls"); 
-                clickOverlay.style.display = 'none'; // در حالت عادی لایه مخفی می‌شود تا دکمه‌ها کار کنند
+                clickOverlay.style.display = 'none'; 
             } else {
-                clickOverlay.style.display = 'block'; // در حالت فول‌اسکرین لایه فعال می‌شود
+                clickOverlay.style.display = 'block'; 
                 showFullscreenUI(); 
             }
         });
