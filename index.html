@@ -216,6 +216,7 @@
             <div id="video-wrapper">
                 <div id="loader" class="loader"></div>
                 <video id="video" playsinline></video>
+                <div id="click-overlay" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:10; cursor:pointer;"></div>
                 
                 <div id="fs-header" class="fs-ui fs-header">
                     <div class="fs-title-box">
@@ -251,7 +252,7 @@
         // دیتابیس کانال‌ها
         const myChannels = [
             { id: "ch1", name: "Rudaw TV", category: "news", logo: "https://raw.githubusercontent.com/picons/picons/2c3e96a983996957dc8e6c33c60ebd65ce98f1e2/build-source/logos/rudaw.dark.svg", url: "https://live.rudaw.net/hls/rudaw-tv/master.m3u8" },
-            { id: "ch10", name: "Ava News", category: "news", logo: "https://ava.news/ava-logo.svg", url: "http://ur4k.me:80/live/houmid738/1a1dbbe35/392585.m3u8" },
+            { id: "ch10", name: "Ava News", category: "news", logo: "https://ava.news/ava-logo.svg", url: "https://ronikatv.salehjawhar.workers.dev/?url=http://ur4k.me:80/live/houmid738/1a1dbbe35/392585.m3u8" },
             { id: "ch2", name: "Kurdistan 24", category: "news", logo: "https://i.imgur.com/9QWs2ms.png", url: "https://ronikatv.salehjawhar.workers.dev/?url=https://d1x82nydcxndze.cloudfront.net/live/index_720p25.m3u8" },
             { id: "ch4", name: "NRT HD", category: "news", logo: "https://i.imgur.com/4pNMVZB.png", url: "https://live20.bozztv.com/giatv/giatv-nrt/nrt/chunks.m3u8" },
             { id: "ch5", name: "Kurdsat News", category: "news", logo: "https://i.imgur.com/F3XRwkt.png", url: "https://hlspackager.akamaized.net/live/DB/KURDSAT_NEWS/HLS/KURDSAT_NEWS.m3u8" },
@@ -388,48 +389,61 @@
         function changeQuality(val) { if(hls) hls.currentLevel = parseInt(val); }
 
         /* ================================================= */
-        /* سیستم جادویی فول‌اسکرین سفارشی با منوی کلیکی */
-        /* ================================================= */
-        const videoWrapper = document.getElementById('video-wrapper');
-        const fsUiElements = document.querySelectorAll('.fs-ui');
-        let uiTimeout;
+      /* سیستم جادویی فول‌اسکرین سفارشی با منوی کلیکی (اصلاح شده) */
+/* ================================================= */
+const videoWrapper = document.getElementById('video-wrapper');
+const clickOverlay = document.getElementById('click-overlay'); // لایه جدید
+const fsUiElements = document.querySelectorAll('.fs-ui');
+let uiTimeout;
 
-        function toggleCustomFullscreen() {
-            if (!document.fullscreenElement) {
-                if (videoWrapper.requestFullscreen) videoWrapper.requestFullscreen();
-                else if (videoWrapper.webkitRequestFullscreen) videoWrapper.webkitRequestFullscreen();
-            } else {
-                if (document.exitFullscreen) document.exitFullscreen();
-            }
+function toggleCustomFullscreen() {
+    if (!document.fullscreenElement) {
+        if (videoWrapper.requestFullscreen) videoWrapper.requestFullscreen();
+        else if (videoWrapper.webkitRequestFullscreen) videoWrapper.webkitRequestFullscreen();
+    } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+    }
+}
+
+// وقتی روی لایه نامرئی کلیک شد، منوی کانال‌ها را نشان بده
+clickOverlay.addEventListener('click', (e) => {
+    if(document.fullscreenElement) {
+        showFullscreenUI();
+        
+        // مدیریت کنترل‌های مرورگر برای تداخل پیدا نکردن با منو
+        if(video.hasAttribute("controls")) {
+            video.removeAttribute("controls");
+        } else {
+            video.setAttribute("controls", "controls");
         }
+    } else {
+        // در حالت عادی، با کلیک روی تصویر ویدیو پخش یا متوقف شود
+        if(video.paused) video.play(); else video.pause();
+    }
+});
 
-        // وقتی روی ویدیو کلیک شد، منوی کانال‌ها رو نشون بده
-        videoWrapper.addEventListener('click', (e) => {
-            // فقط در حالت فول‌اسکرین منو رو نشون بده
-            if(document.fullscreenElement) {
-                showFullscreenUI();
-            }
-        });
+function showFullscreenUI() {
+    // نمایش المان‌ها
+    fsUiElements.forEach(el => el.classList.add('active'));
+    
+    // ریست کردن تایمر مخفی شدن
+    clearTimeout(uiTimeout);
+    
+    // بعد از 4 ثانیه عدم فعالیت، منو مخفی شود
+    uiTimeout = setTimeout(() => {
+        fsUiElements.forEach(el => el.classList.remove('active'));
+    }, 4000);
+}
 
-        function showFullscreenUI() {
-            // نمایش المان‌ها
-            fsUiElements.forEach(el => el.classList.add('active'));
-            // ریست کردن تایمر مخفی شدن
-            clearTimeout(uiTimeout);
-            // بعد از 4 ثانیه عدم فعالیت، منو مخفی بشه
-            uiTimeout = setTimeout(() => {
-                fsUiElements.forEach(el => el.classList.remove('active'));
-            }, 4000);
-        }
-
-        // وقتی از حالت فول‌اسکرین خارج شد، منوها رو کلاً مخفی کن
-        document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement) {
-                fsUiElements.forEach(el => el.classList.remove('active'));
-            } else {
-                showFullscreenUI(); // اول که وارد شد یه بار نشون بده
-            }
-        });
+// وقتی از حالت فول‌اسکرین خارج شد، منوها را کلاً مخفی کن
+document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+        fsUiElements.forEach(el => el.classList.remove('active'));
+        video.setAttribute("controls", "controls"); // برگرداندن کنترل‌ها در حالت عادی
+    } else {
+        showFullscreenUI(); // نمایش منو به محض ورود به فول‌اسکرین
+    }
+});
 
         /* ================================================= */
 
